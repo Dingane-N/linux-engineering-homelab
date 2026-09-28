@@ -1,0 +1,8 @@
+*.log
+*.key
+*.pem
+.env
+secrets/
+.vault_pass
+__pycache__/
+*.pyc
