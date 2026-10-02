@@ -112,12 +112,8 @@ enp0s8
     +-- rsyslog traffic
     +-- Security management
 ```
+The management network is: 10.10.10.0/24
 
-The management network is:
-
-```text
-10.10.10.0/24
-```
 
 Current addressing:
 
@@ -133,7 +129,7 @@ Internet traffic must continue through the NAT interface.
 
 Expected default route:
 
-```text
+```
 default via 10.0.2.2 dev enp0s3
 ```
 
@@ -986,3 +982,30 @@ Combined with the remaining infrastructure:
 The completed architecture will allow the homelab to demonstrate Linux administration, cross-distribution configuration management, automation, application infrastructure, database services, network security, centralized logging, auditing, compliance validation, security monitoring, storage engineering, and production-style troubleshooting.
 
 
+### DingasHost4 Storage and PostgreSQL Implementation
+
+DingasHost4 now has a dedicated 25 GiB service disk managed using LVM.
+
+/dev/sdb
+   |
+   +-- vg_long_storage
+         |
+         +-- lv_pgdata      10G  -> /var/lib/postgresql
+         +-- lv_pgbackup     5G  -> /var/backups/postgresql
+         +-- lv_logs         8G  -> /var/log/remote
+
+All three logical volumes use XFS and persistent UUID-based /etc/fstab mounts.
+PostgreSQL 18.6 is operational from the dedicated database filesystem.
+Current application database:
+Database: labdb
+Owner:    labapp
+
+A significant troubleshooting exercise occurred during the storage migration. PostgreSQL had already initialized /var/lib/postgresql/18/main before the new logical volume was mounted. Mounting lv_pgdata over /var/lib/postgresql therefore hid the existing cluster.
+The original data was recovered by unmounting the new filesystem, temporarily mounting it elsewhere, migrating the PostgreSQL hierarchy with rsync, remounting the logical volume and restarting the cluster.
+Final status:
+PostgreSQL 18/main
+Port 5432
+Owner postgres
+Status online
+
+The next Host4 phases are PostgreSQL network restrictions, Ubuntu firewall policy, centralized rsyslog collection, audit-event aggregation, backup automation and SIEM-style security analysis.

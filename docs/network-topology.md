@@ -54,7 +54,6 @@ Role: Data, Logging, Security and Compliance Services Node
 Management IP: 10.10.10.22
 
 Management:
-
 - SSH
 - Ansible
 - Managed from DingasHost1
@@ -68,10 +67,30 @@ Current services:
 Planned services:
 
 - PostgreSQL
-- persistent database storage
-- PostgreSQL backup storage
+- OpenSSH
+- auditd
+- rsyslog
+- LVM / XFS storage
+
+Storage:
+/dev/sdb
+   |
+   +-- vg_long_storage
+         |
+         +-- lv_pgdata    -> /var/lib/postgresql
+         +-- lv_pgbackup  -> /var/backups/postgresql
+         +-- lv_logs      -> /var/log/remote
+
+Current PostgreSQL database:
+labdb
+
+Application database role:
+labapp
+
+Future responsibilities:
 - centralized rsyslog collection
-- UFW / nftables firewall hardening
-- compliance evidence collection
-- security log analysis
-- future SIEM-style capabilities
+- PostgreSQL backup automation
+- security-log retention
+- compliance evidence storage
+- OpenSCAP testing
+- SIEM-style security analysis.
