@@ -88,3 +88,20 @@ SIEM-style correlation
         |
         v
 Ansible least-privilege hardening
+
+
+
+### Ubuntu 26.04 Compliance Status (06-10-2026)
+
+OpenSCAP 1.4.3 and ComplianceAsCode 0.1.82 have been validated on DingasHost4.
+
+The Ubuntu 26.04 source datastream successfully passes OpenSCAP datastream validation. However, the current content does not expose a sufficiently comprehensive evaluable security profile for the intended baseline assessment.
+
+Ubuntu 24.04 profiles will not be used against the Ubuntu 26.04 system simply to produce a compliance score.
+
+Formal baseline scanning and remediation are therefore deferred until
+appropriate Ubuntu 26.04 content is available.
+
+Detailed evidence:
+
+`docs/compliance/evidence/2026-10-06-ubuntu2604-openscap-validation.md`
