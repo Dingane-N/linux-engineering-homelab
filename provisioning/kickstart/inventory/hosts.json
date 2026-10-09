@@ -1,0 +1,18 @@
+{
+  "dingashost2": {
+    "hostname": "dingashost2.lab.test",
+    "management_ip": "10.10.10.102",
+    "nat_interface": "enp0s3",
+    "management_interface": "enp0s8",
+    "role": "application",
+    "internet_connected": true
+  },
+  "dingashost3": {
+    "hostname": "dingashost3.lab.test",
+    "management_ip": "10.10.10.103",
+    "nat_interface": null,
+    "management_interface": "enp0s3",
+    "role": "engineering",
+    "internet_connected": false
+  }
+}

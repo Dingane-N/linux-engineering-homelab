@@ -1,0 +1,126 @@
+# ============================================================
+# RHEL 10 Automated Kickstart
+# Linux Engineering Homelab
+#
+# Generated automatically. Do not commit rendered files.
+# ============================================================
+
+text
+cdrom
+
+lang en_US.UTF-8
+keyboard us
+timezone Africa/Maputo --utc
+
+firstboot --disable
+reboot
+
+# ============================================================
+# Authentication
+#
+# Root exists for local emergency administration.
+# Remote SSH login as root is disabled in %post.
+# ============================================================
+
+rootpw --iscrypted __ROOT_PASSWORD_HASH__
+
+user --name=dingane --groups=wheel --password=__ADMIN_PASSWORD_HASH__ --iscrypted --gecos="Linux Administrator"
+
+sshkey --username=dingane "__SSH_PUBLIC_KEY__"
+
+# ============================================================
+# Security
+# ============================================================
+
+selinux --enforcing
+firewall --enabled --service=ssh
+
+# ============================================================
+# Networking
+# ============================================================
+
+__NAT_NETWORK__
+
+network --device=__MGMT_INTERFACE__ --bootproto=static --ip=__MGMT_IP__ --netmask=255.255.255.0 --nodefroute --activate --onboot=on --hostname=__HOSTNAME__
+
+# ============================================================
+# Storage
+#
+# Only the primary installation disk is modified.
+# Secondary disks are deliberately excluded.
+# ============================================================
+
+ignoredisk --only-use=sda
+
+zerombr
+clearpart --all --initlabel --drives=sda
+
+# Create only firmware/platform-required partitions here.
+# /boot is created explicitly below.
+reqpart
+
+part /boot --fstype=xfs --size=1024 --ondisk=sda
+
+part pv.01 --fstype=lvmpv --size=1 --grow --ondisk=sda
+
+volgroup vg_system pv.01 --pesize=4096 --reserved-percent=10
+
+logvol / --fstype=xfs --vgname=vg_system --name=root --size=10240
+
+logvol /var --fstype=xfs --vgname=vg_system --name=var --size=4096
+
+logvol /var/log --fstype=xfs --vgname=vg_system --name=varlog --size=2048
+
+logvol /home --fstype=xfs --vgname=vg_system --name=home --size=2048
+
+logvol swap --fstype=swap --vgname=vg_system --name=swap --size=2048
+
+# ============================================================
+# Services
+# ============================================================
+
+services --enabled=sshd,NetworkManager,firewalld,rsyslog,auditd
+
+# ============================================================
+# Packages
+# ============================================================
+
+%packages
+@^minimal-environment
+openssh-server
+python3
+NetworkManager
+firewalld
+rsyslog
+audit
+sudo
+git
+curl
+%end
+
+# ============================================================
+# Post-install Linux security baseline
+# ============================================================
+
+%post --log=/root/kickstart-post.log
+
+mkdir -p /etc/ssh/sshd_config.d
+
+cat > /etc/ssh/sshd_config.d/50-linux-lab.conf <<'EOF'
+PermitRootLogin no
+PubkeyAuthentication yes
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+X11Forwarding no
+EOF
+
+chmod 0600 /etc/ssh/sshd_config.d/50-linux-lab.conf
+
+restorecon -RF /etc/ssh
+
+systemctl enable sshd
+systemctl enable NetworkManager
+systemctl enable firewalld
+systemctl enable rsyslog
+
+%end

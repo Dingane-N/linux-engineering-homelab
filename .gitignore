@@ -8,3 +8,10 @@ secrets/
 .vault_pass
 __pycache__/
 *.pyc
+
+# Generated provisioning files
+provisioning/kickstart/generated*.cfg
+provisioning/kickstart/http-root/ks/*.cfg
+
+# Provisioning secrets
+provisioning/kickstart/secrets/
