@@ -1,0 +1,4 @@
+NAME        UUID                                  TYPE      DEVICE 
+nat-uplink  93f5af7e-9aea-3847-aac8-65f0242a6a6f  ethernet  enp0s3 
+lab-mgmt    4130659c-0f4e-3d36-bbae-9a9726eed215  ethernet  enp0s8 
+lo          9e8a562d-340a-4dac-80b1-cf7c3df2fc22  loopback  lo     

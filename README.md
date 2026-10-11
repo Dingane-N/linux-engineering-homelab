@@ -555,3 +555,31 @@ The lab is intended to demonstrate the ability to build, administer, automate, s
        Application Node        Isolated Engineering Node
                               Jenkins / Containers /
                               Kubernetes / CI-CD
+
+## Ansible Security Automation
+
+DingasHost1 now operates as the Ansible control node for the RHEL 10 lab.
+
+Current managed-node architecture:
+
+DingasHost1  10.10.10.100  Ansible Control Node
+DingasHost2  10.10.10.102  Application Managed Node
+DingasHost3  10.10.10.103  Security/Engineering Managed Node
+
+Implemented capabilities include:
+- Dedicated SSH automation identity
+- Static Ansible inventory
+- Functional inventory groups
+- Multi-node remote execution
+- RHEL fact gathering
+- SELinux validation
+- sshd and firewalld service validation
+- Critical account-file permission auditing
+- AIDE presence detection
+- Timestamped execution evidence
+Initial security baseline result:
+dingashost2 : ok=12 changed=0 unreachable=0 failed=0
+dingashost3 : ok=12 changed=0 unreachable=0 failed=0
+
+See:
+docs/operations/2026-10-11-ansible-security-baseline.md

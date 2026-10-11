@@ -1,0 +1,113 @@
+
+PLAY [RHEL 10 security baseline validation] ************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [dingashost3]
+ok: [dingashost2]
+
+TASK [Display managed host identity] *******************************************
+ok: [dingashost2] => {
+    "msg": [
+        "Host: dingashost2",
+        "Address: 10.10.10.102",
+        "OS: RedHat 10.2",
+        "Kernel: 6.12.0-211.7.3.el10_2.x86_64"
+    ]
+}
+ok: [dingashost3] => {
+    "msg": [
+        "Host: dingashost3",
+        "Address: 10.10.10.103",
+        "OS: RedHat 10.2",
+        "Kernel: 6.12.0-211.7.3.el10_2.x86_64"
+    ]
+}
+
+TASK [Check SELinux enforcement state] *****************************************
+ok: [dingashost2]
+ok: [dingashost3]
+
+TASK [Display SELinux state] ***************************************************
+ok: [dingashost2] => {
+    "msg": "SELinux: Enforcing"
+}
+ok: [dingashost3] => {
+    "msg": "SELinux: Enforcing"
+}
+
+TASK [Check SSH service] *******************************************************
+ok: [dingashost3]
+ok: [dingashost2]
+
+TASK [Display SSH service state] ***********************************************
+ok: [dingashost2] => {
+    "msg": "sshd: active"
+}
+ok: [dingashost3] => {
+    "msg": "sshd: active"
+}
+
+TASK [Check firewalld service] *************************************************
+ok: [dingashost2]
+ok: [dingashost3]
+
+TASK [Display firewalld state] *************************************************
+ok: [dingashost2] => {
+    "msg": "firewalld: active"
+}
+ok: [dingashost3] => {
+    "msg": "firewalld: active"
+}
+
+TASK [Check critical account file permissions] *********************************
+ok: [dingashost3] => (item=/etc/passwd)
+ok: [dingashost2] => (item=/etc/passwd)
+ok: [dingashost3] => (item=/etc/group)
+ok: [dingashost2] => (item=/etc/group)
+ok: [dingashost3] => (item=/etc/shadow)
+ok: [dingashost2] => (item=/etc/shadow)
+ok: [dingashost3] => (item=/etc/gshadow)
+ok: [dingashost2] => (item=/etc/gshadow)
+
+TASK [Display critical file permissions] ***************************************
+ok: [dingashost2] => (item={'changed': False, 'stat': {'exists': True, 'path': '/etc/passwd', 'mode': '0644', 'isdir': False, 'ischr': False, 'isblk': False, 'isreg': True, 'isfifo': False, 'islnk': False, 'issock': False, 'uid': 0, 'gid': 0, 'size': 2358, 'inode': 17444646, 'dev': 64768, 'nlink': 1, 'atime': 1791640023.6087673, 'mtime': 1791546729.4420538, 'ctime': 1791546729.4442425, 'wusr': True, 'rusr': True, 'xusr': False, 'wgrp': False, 'rgrp': True, 'xgrp': False, 'woth': False, 'roth': True, 'xoth': False, 'isuid': False, 'isgid': False, 'blocks': 8, 'block_size': 4096, 'device_type': 0, 'readable': True, 'writeable': False, 'executable': False, 'pw_name': 'root', 'gr_name': 'root', 'checksum': 'c5b9b6c53fca76f9c2d3a96c89f49e405158bb49', 'mimetype': 'text/plain', 'charset': 'us-ascii', 'version': '3509009037', 'attributes': [], 'attr_flags': ''}, 'invocation': {'module_args': {'path': '/etc/passwd', 'follow': False, 'get_checksum': True, 'get_mime': True, 'get_attributes': True, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/etc/passwd', 'ansible_loop_var': 'item'}) => {
+    "msg": "/etc/passwd owner=root group=root mode=0644"
+}
+ok: [dingashost2] => (item={'changed': False, 'stat': {'exists': True, 'path': '/etc/group', 'mode': '0644', 'isdir': False, 'ischr': False, 'isblk': False, 'isreg': True, 'isfifo': False, 'islnk': False, 'issock': False, 'uid': 0, 'gid': 0, 'size': 886, 'inode': 17444648, 'dev': 64768, 'nlink': 1, 'atime': 1791640022.6837673, 'mtime': 1791546729.4645846, 'ctime': 1791546729.4682417, 'wusr': True, 'rusr': True, 'xusr': False, 'wgrp': False, 'rgrp': True, 'xgrp': False, 'woth': False, 'roth': True, 'xoth': False, 'isuid': False, 'isgid': False, 'blocks': 8, 'block_size': 4096, 'device_type': 0, 'readable': True, 'writeable': False, 'executable': False, 'pw_name': 'root', 'gr_name': 'root', 'checksum': '9e59149d53bfc396a8db65c324b9638751148939', 'mimetype': 'text/plain', 'charset': 'us-ascii', 'version': '2646547401', 'attributes': [], 'attr_flags': ''}, 'invocation': {'module_args': {'path': '/etc/group', 'follow': False, 'get_checksum': True, 'get_mime': True, 'get_attributes': True, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/etc/group', 'ansible_loop_var': 'item'}) => {
+    "msg": "/etc/group owner=root group=root mode=0644"
+}
+ok: [dingashost3] => (item={'changed': False, 'stat': {'exists': True, 'path': '/etc/passwd', 'mode': '0644', 'isdir': False, 'ischr': False, 'isblk': False, 'isreg': True, 'isfifo': False, 'islnk': False, 'issock': False, 'uid': 0, 'gid': 0, 'size': 2358, 'inode': 17424780, 'dev': 64768, 'nlink': 1, 'atime': 1791550402.0320053, 'mtime': 1791550401.9239302, 'ctime': 1791550401.9320054, 'wusr': True, 'rusr': True, 'xusr': False, 'wgrp': False, 'rgrp': True, 'xgrp': False, 'woth': False, 'roth': True, 'xoth': False, 'isuid': False, 'isgid': False, 'blocks': 8, 'block_size': 4096, 'device_type': 0, 'readable': True, 'writeable': False, 'executable': False, 'pw_name': 'root', 'gr_name': 'root', 'checksum': 'c5b9b6c53fca76f9c2d3a96c89f49e405158bb49', 'mimetype': 'text/plain', 'charset': 'us-ascii', 'version': '1126843162', 'attributes': [], 'attr_flags': ''}, 'invocation': {'module_args': {'path': '/etc/passwd', 'follow': False, 'get_checksum': True, 'get_mime': True, 'get_attributes': True, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/etc/passwd', 'ansible_loop_var': 'item'}) => {
+    "msg": "/etc/passwd owner=root group=root mode=0644"
+}
+ok: [dingashost2] => (item={'changed': False, 'stat': {'exists': True, 'path': '/etc/shadow', 'mode': '0000', 'isdir': False, 'ischr': False, 'isblk': False, 'isreg': True, 'isfifo': False, 'islnk': False, 'issock': False, 'uid': 0, 'gid': 0, 'size': 1104, 'inode': 17444642, 'dev': 64768, 'nlink': 1, 'atime': 1791640028.5037668, 'mtime': 1791546729.74614, 'ctime': 1791546729.7492328, 'wusr': False, 'rusr': False, 'xusr': False, 'wgrp': False, 'rgrp': False, 'xgrp': False, 'woth': False, 'roth': False, 'xoth': False, 'isuid': False, 'isgid': False, 'blocks': 8, 'block_size': 4096, 'device_type': 0, 'readable': False, 'writeable': False, 'executable': False, 'pw_name': 'root', 'gr_name': 'root', 'mimetype': 'unknown', 'charset': 'unknown', 'version': None, 'attributes': [], 'attr_flags': ''}, 'invocation': {'module_args': {'path': '/etc/shadow', 'follow': False, 'get_checksum': True, 'get_mime': True, 'get_attributes': True, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/etc/shadow', 'ansible_loop_var': 'item'}) => {
+    "msg": "/etc/shadow owner=root group=root mode=0000"
+}
+ok: [dingashost3] => (item={'changed': False, 'stat': {'exists': True, 'path': '/etc/group', 'mode': '0644', 'isdir': False, 'ischr': False, 'isblk': False, 'isreg': True, 'isfifo': False, 'islnk': False, 'issock': False, 'uid': 0, 'gid': 0, 'size': 886, 'inode': 17424782, 'dev': 64768, 'nlink': 1, 'atime': 1791550402.0420053, 'mtime': 1791550401.9670053, 'ctime': 1791550401.9750054, 'wusr': True, 'rusr': True, 'xusr': False, 'wgrp': False, 'rgrp': True, 'xgrp': False, 'woth': False, 'roth': True, 'xoth': False, 'isuid': False, 'isgid': False, 'blocks': 8, 'block_size': 4096, 'device_type': 0, 'readable': True, 'writeable': False, 'executable': False, 'pw_name': 'root', 'gr_name': 'root', 'checksum': '9e59149d53bfc396a8db65c324b9638751148939', 'mimetype': 'text/plain', 'charset': 'us-ascii', 'version': '2227122461', 'attributes': [], 'attr_flags': ''}, 'invocation': {'module_args': {'path': '/etc/group', 'follow': False, 'get_checksum': True, 'get_mime': True, 'get_attributes': True, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/etc/group', 'ansible_loop_var': 'item'}) => {
+    "msg": "/etc/group owner=root group=root mode=0644"
+}
+ok: [dingashost2] => (item={'changed': False, 'stat': {'exists': True, 'path': '/etc/gshadow', 'mode': '0000', 'isdir': False, 'ischr': False, 'isblk': False, 'isreg': True, 'isfifo': False, 'islnk': False, 'issock': False, 'uid': 0, 'gid': 0, 'size': 722, 'inode': 17444649, 'dev': 64768, 'nlink': 1, 'atime': 1791546872.0800009, 'mtime': 1791546729.473984, 'ctime': 1791546729.4772413, 'wusr': False, 'rusr': False, 'xusr': False, 'wgrp': False, 'rgrp': False, 'xgrp': False, 'woth': False, 'roth': False, 'xoth': False, 'isuid': False, 'isgid': False, 'blocks': 8, 'block_size': 4096, 'device_type': 0, 'readable': False, 'writeable': False, 'executable': False, 'pw_name': 'root', 'gr_name': 'root', 'mimetype': 'unknown', 'charset': 'unknown', 'version': None, 'attributes': [], 'attr_flags': ''}, 'invocation': {'module_args': {'path': '/etc/gshadow', 'follow': False, 'get_checksum': True, 'get_mime': True, 'get_attributes': True, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/etc/gshadow', 'ansible_loop_var': 'item'}) => {
+    "msg": "/etc/gshadow owner=root group=root mode=0000"
+}
+ok: [dingashost3] => (item={'changed': False, 'stat': {'exists': True, 'path': '/etc/shadow', 'mode': '0000', 'isdir': False, 'ischr': False, 'isblk': False, 'isreg': True, 'isfifo': False, 'islnk': False, 'issock': False, 'uid': 0, 'gid': 0, 'size': 1107, 'inode': 17424778, 'dev': 64768, 'nlink': 1, 'atime': 1791550402.5670054, 'mtime': 1791550402.3291316, 'ctime': 1791550402.3370054, 'wusr': False, 'rusr': False, 'xusr': False, 'wgrp': False, 'rgrp': False, 'xgrp': False, 'woth': False, 'roth': False, 'xoth': False, 'isuid': False, 'isgid': False, 'blocks': 8, 'block_size': 4096, 'device_type': 0, 'readable': False, 'writeable': False, 'executable': False, 'pw_name': 'root', 'gr_name': 'root', 'mimetype': 'unknown', 'charset': 'unknown', 'version': None, 'attributes': [], 'attr_flags': ''}, 'invocation': {'module_args': {'path': '/etc/shadow', 'follow': False, 'get_checksum': True, 'get_mime': True, 'get_attributes': True, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/etc/shadow', 'ansible_loop_var': 'item'}) => {
+    "msg": "/etc/shadow owner=root group=root mode=0000"
+}
+ok: [dingashost3] => (item={'changed': False, 'stat': {'exists': True, 'path': '/etc/gshadow', 'mode': '0000', 'isdir': False, 'ischr': False, 'isblk': False, 'isreg': True, 'isfifo': False, 'islnk': False, 'issock': False, 'uid': 0, 'gid': 0, 'size': 722, 'inode': 17424783, 'dev': 64768, 'nlink': 1, 'atime': 1791550401.9850054, 'mtime': 1791550401.9868927, 'ctime': 1791550401.9940054, 'wusr': False, 'rusr': False, 'xusr': False, 'wgrp': False, 'rgrp': False, 'xgrp': False, 'woth': False, 'roth': False, 'xoth': False, 'isuid': False, 'isgid': False, 'blocks': 8, 'block_size': 4096, 'device_type': 0, 'readable': False, 'writeable': False, 'executable': False, 'pw_name': 'root', 'gr_name': 'root', 'mimetype': 'unknown', 'charset': 'unknown', 'version': None, 'attributes': [], 'attr_flags': ''}, 'invocation': {'module_args': {'path': '/etc/gshadow', 'follow': False, 'get_checksum': True, 'get_mime': True, 'get_attributes': True, 'checksum_algorithm': 'sha1'}}, 'failed': False, 'item': '/etc/gshadow', 'ansible_loop_var': 'item'}) => {
+    "msg": "/etc/gshadow owner=root group=root mode=0000"
+}
+
+TASK [Check whether AIDE is installed] *****************************************
+ok: [dingashost3]
+ok: [dingashost2]
+
+TASK [Display AIDE package state] **********************************************
+ok: [dingashost2] => {
+    "msg": "package aide is not installed"
+}
+ok: [dingashost3] => {
+    "msg": "package aide is not installed"
+}
+
+PLAY RECAP *********************************************************************
+dingashost2                : ok=12   changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+dingashost3                : ok=12   changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+

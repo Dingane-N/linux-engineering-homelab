@@ -1,96 +1,111 @@
-# DingasLab
+# Linux Engineering Homelab — Network Topology
 
-## Network
+## Current Architecture
 
-Management subnet: 10.10.10.0/24
+The current lab consists of three Red Hat Enterprise Linux 10 virtual machines running in Oracle VirtualBox.
 
-Windows VirtualBox Host:
-10.10.10.1
+The environment uses a dedicated VirtualBox Host-Only network:
+10.10.10.0/24
 
-## Nodes
+DingasHost1 acts as the Linux engineering control node. DingasHost2 acts as the application node. DingasHost3 is intentionally isolated from direct Internet access and will be used for engineering, container, CI/CD and orchestration experiments.
 
-##DingasHost1
-OS: RHEL 10
-Role: Control / Management Node
-Management IP: 10.10.10.11
+Topology
+                         Internet
+                            |
+                     VirtualBox NAT
+                            |
+                            |
+                  +---------+---------+
+                  |                   |
+                  v                   v
+            DingasHost1          DingasHost2
+              RHEL 10              RHEL 10
+           Control Node          Application Node
 
-## DingasHost2
-OS: RHEL 10
-Role: Managed RHEL Server
-Management IP: 10.10.10.12
+           enp0s3: NAT           enp0s3: NAT
+           DHCP                  DHCP
 
-## DingasHost3
+           enp0s8:              enp0s8:
+           10.10.10.100         10.10.10.102
+                  |                   |
+                  +---------+---------+
+                            |
+                     10.10.10.0/24
+                   Host-Only Network
+                            |
+                            |
+                            v
+                      DingasHost3
+                        RHEL 10
+                 Isolated Engineering Node
 
-OS: RHEL 10
+                       enp0s3:
+                     10.10.10.103
 
-Role: Application Server - App Node B
+                     NO NAT adapter
+                     NO direct Internet
 
-Management IP: 10.10.10.21
+Node Roles
+Host	Operating System	Management IP	Role	Internet
+DingasHost1	RHEL 10	10.10.10.100	Ansible, Git, provisioning and Linux engineering control node	Yes
+DingasHost2	RHEL 10	10.10.10.102	Application and managed Linux server	Yes
+DingasHost3	RHEL 10	10.10.10.103	Isolated engineering, containers, Jenkins and Kubernetes node	No
 
-Management:
 
-- SSH
-- Ansible
-- Managed from DingasHost1
+## Management Network
 
-Application:
+10.10.10.0/24
+                         |
+        +----------------+----------------+
+        |                |                |
+        v                v                v
 
-- Nginx
++----------------+ +----------------+ +----------------+
+| DingasHost1    | | DingasHost2    | | DingasHost3    |
+| 10.10.10.100   | | 10.10.10.102   | | 10.10.10.103   |
+|                | |                | |                |
+| Ansible        | | Application    | | Security /     |
+| Control Node   | | Managed Node   | | Engineering    |
++----------------+ +----------------+ +----------------+
+        |                ^                ^
+        |                |                |
+        +------ SSH / Ansible ------------+
 
-Security:
+DingasHost1
+Role:
+- Ansible control node
+- Git repository host
+- Automation development node
+- Provisioning services
+Interfaces:
+- NAT uplink
+- Host-only management network
+DingasHost2
+Role:
+- Application managed node
+- Security-hardening target
+Management address:
+10.10.10.102/24
 
-- SELinux Enforcing
-- firewalld
-- auditd
+DingasHost3
+Role:
+- Security and engineering managed node
+- Isolated experimentation target
+Management address:
+10.10.10.103/24
 
----
+Automation Flow
+Git Repository
+      |
+      v
+DingasHost1
+      |
+      | Ansible + SSH
+      |
+ +----+----+
+ |         |
+ v         v
+Host2     Host3
 
-## DingasHost4
+Security configuration is validated through Ansible before remediation is introduced.
 
-OS: Ubuntu 26.04.1 LTS
-
-Role: Data, Logging, Security and Compliance Services Node
-
-Management IP: 10.10.10.22
-
-Management:
-- SSH
-- Ansible
-- Managed from DingasHost1
-
-Current services:
-
-- OpenSSH
-- rsyslog
-- auditd
-
-Planned services:
-
-- PostgreSQL
-- OpenSSH
-- auditd
-- rsyslog
-- LVM / XFS storage
-
-Storage:
-/dev/sdb
-   |
-   +-- vg_long_storage
-         |
-         +-- lv_pgdata    -> /var/lib/postgresql
-         +-- lv_pgbackup  -> /var/backups/postgresql
-         +-- lv_logs      -> /var/log/remote
-
-Current PostgreSQL database:
-labdb
-
-Application database role:
-labapp
-
-Future responsibilities:
-- centralized rsyslog collection
-- PostgreSQL backup automation
-- security-log retention
-- compliance evidence storage
-- OpenSCAP testing
-- SIEM-style security analysis.

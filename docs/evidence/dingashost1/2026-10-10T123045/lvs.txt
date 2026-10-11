@@ -1,0 +1,4 @@
+  LV   VG   Attr       LSize  Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert Devices        
+  root rhel -wi-ao---- 42.99g                                                     /dev/sdb3(1280)
+  root rhel -wi-ao---- 42.99g                                                     /dev/sda1(0)   
+  swap rhel -wi-ao----  5.00g                                                     /dev/sdb3(0)   

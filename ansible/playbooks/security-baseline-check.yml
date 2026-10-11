@@ -1,0 +1,73 @@
+---
+- name: RHEL 10 security baseline validation
+  hosts: managed
+  gather_facts: true
+  become: false
+
+  tasks:
+
+    - name: Display managed host identity
+      ansible.builtin.debug:
+        msg:
+          - "Host: {{ inventory_hostname }}"
+          - "Address: {{ ansible_host }}"
+          - "OS: {{ ansible_distribution }} {{ ansible_distribution_version }}"
+          - "Kernel: {{ ansible_kernel }}"
+
+    - name: Check SELinux enforcement state
+      ansible.builtin.command:
+        cmd: getenforce
+      register: selinux_state
+      changed_when: false
+
+    - name: Display SELinux state
+      ansible.builtin.debug:
+        msg: "SELinux: {{ selinux_state.stdout }}"
+
+    - name: Check SSH service
+      ansible.builtin.command:
+        cmd: systemctl is-active sshd
+      register: sshd_state
+      changed_when: false
+      failed_when: false
+
+    - name: Display SSH service state
+      ansible.builtin.debug:
+        msg: "sshd: {{ sshd_state.stdout }}"
+
+    - name: Check firewalld service
+      ansible.builtin.command:
+        cmd: systemctl is-active firewalld
+      register: firewalld_state
+      changed_when: false
+      failed_when: false
+
+    - name: Display firewalld state
+      ansible.builtin.debug:
+        msg: "firewalld: {{ firewalld_state.stdout }}"
+
+    - name: Check critical account file permissions
+      ansible.builtin.stat:
+        path: "{{ item }}"
+      loop:
+        - /etc/passwd
+        - /etc/group
+        - /etc/shadow
+        - /etc/gshadow
+      register: account_files
+
+    - name: Display critical file permissions
+      ansible.builtin.debug:
+        msg: "{{ item.stat.path }} owner={{ item.stat.pw_name }} group={{ item.stat.gr_name }} mode={{ item.stat.mode }}"
+      loop: "{{ account_files.results }}"
+
+    - name: Check whether AIDE is installed
+      ansible.builtin.command:
+        cmd: rpm -q aide
+      register: aide_state
+      changed_when: false
+      failed_when: false
+
+    - name: Display AIDE package state
+      ansible.builtin.debug:
+        msg: "{{ aide_state.stdout }}"

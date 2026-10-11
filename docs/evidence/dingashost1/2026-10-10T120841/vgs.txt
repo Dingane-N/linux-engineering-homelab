@@ -1,0 +1,2 @@
+  VG   #PV #LV #SN Attr   VSize  VFree
+  rhel   2   2   0 wz--n- 47.99g    0 
