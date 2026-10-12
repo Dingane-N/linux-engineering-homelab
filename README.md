@@ -583,3 +583,38 @@ dingashost3 : ok=12 changed=0 unreachable=0 failed=0
 
 See:
 docs/operations/2026-10-11-ansible-security-baseline.md
+
+
+## Zero-Trust Edge Security Lab
+
+A RHEL 10 edge-security architecture is being developed on DingasHost3 using
+NetworkManager and native nftables.
+
+Implemented during the current phase:
+
+- five-interface RHEL edge-router topology
+- dedicated management, WAN, Corporate, DMZ and IoT interfaces
+- NetworkManager-managed static internal networks
+- dedicated WAN default route
+- persistent IPv4 forwarding
+- Linux network-stack hardening
+- nftables stateful connection tracking
+- default-deny packet filtering
+- nftables sets and verdict maps
+- network anti-spoofing rules
+- Corporate / DMZ / IoT segmentation
+- SSH and API rate-control structures
+- rate-limited firewall logging
+- outbound NAT masquerading
+- safe systemd-based firewall rollback
+- parser validation before activation
+
+The nftables ruleset successfully passed validation and was loaded during a
+controlled cutover test. Management SSH remained reachable.
+
+The rollback mechanism subsequently restored firewalld, leaving permanent
+nftables activation and Ansible IaC deployment for the next phase.
+
+See:
+
+`docs/operations/2026-10-12-zero-trust-edge-nftables.md`

@@ -1,0 +1,7 @@
+NAME       UUID                                  TYPE      DEVICE  
+edge-wan   c28cdf37-553d-4c78-b35a-ac8057c1d1dd  ethernet  enp0s8  
+edge-corp  1c9770a1-405c-409e-93ea-9302871743f5  ethernet  enp0s9  
+edge-dmz   7846bc79-6a91-469b-afb7-3d78d256d136  ethernet  enp0s10 
+edge-iot   e5beba9e-c1a8-447c-a4f1-efb51b5664c3  ethernet  enp0s16 
+lab-mgmt   b85be49b-0a95-31ee-9f87-4c13752bdd2c  ethernet  enp0s3  
+lo         9853e0fa-0c75-40df-b394-f1dc52a36c7d  loopback  lo      

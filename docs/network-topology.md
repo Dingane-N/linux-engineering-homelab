@@ -109,3 +109,30 @@ Host2     Host3
 
 Security configuration is validated through Ansible before remediation is introduced.
 
+
+## Zero-Trust Edge Network
+
+DingasHost3 now contains an experimental multi-zone edge architecture.
+
+
+                         WAN
+                         |
+                       enp0s8
+                         |
+                 +----------------+
+                 | DingasHost3    |
+                 | RHEL 10 Edge   |
+                 +----------------+
+                  /       |       \
+                 /        |        \
+             enp0s9    enp0s10   enp0s16
+             CORP        DMZ       IoT
+        172.20.10/24 172.20.20/24 172.20.30/24
+
+Management:
+10.10.10.0/24 -> enp0s3
+
+NetworkManager manages interfaces and routes.
+Native nftables provides the experimental packet-filtering architecture,
+including connection tracking, segmentation, verdict maps, rate controls,
+anti-spoofing and NAT.
