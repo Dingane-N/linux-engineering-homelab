@@ -1,0 +1,59 @@
+---
+- name: Configure AIDE file integrity monitoring
+  hosts: linux_security
+  become: true
+  gather_facts: true
+
+  tasks:
+
+    - name: Install AIDE
+      ansible.builtin.dnf:
+        name: aide
+        state: present
+
+    - name: Check active AIDE database
+      ansible.builtin.stat:
+        path: /var/lib/aide/aide.db.gz
+      register: aide_active_db
+
+    - name: Check staged AIDE database
+      ansible.builtin.stat:
+        path: /var/lib/aide/aide.db.new.gz
+      register: aide_staged_db
+
+    - name: Initialize AIDE when no database exists
+      ansible.builtin.command:
+        cmd: aide --init
+      when:
+        - not aide_active_db.stat.exists
+        - not aide_staged_db.stat.exists
+
+    - name: Recheck staged AIDE database
+      ansible.builtin.stat:
+        path: /var/lib/aide/aide.db.new.gz
+      register: aide_staged_db_after
+
+    - name: Promote staged AIDE database
+      ansible.builtin.command:
+        cmd: mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
+      when:
+        - not aide_active_db.stat.exists
+        - aide_staged_db_after.stat.exists
+
+    - name: Verify active AIDE database
+      ansible.builtin.stat:
+        path: /var/lib/aide/aide.db.gz
+      register: aide_final_db
+
+    - name: Verify installed AIDE package
+      ansible.builtin.command:
+        cmd: rpm -q aide
+      register: aide_package
+      changed_when: false
+
+    - name: Display final AIDE status
+      ansible.builtin.debug:
+        msg:
+          - "Host={{ inventory_hostname }}"
+          - "Package={{ aide_package.stdout }}"
+          - "Active database={{ aide_final_db.stat.exists }}"

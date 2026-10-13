@@ -1,620 +1,201 @@
-# Linux Engineering & Security Homelab
+# RHEL 10 Linux Security Engineering Lab
 
-This repository documents a multi-node Red Hat Enterprise Linux 10 homelab focused on Linux systems administration, network security, infrastructure automation, troubleshooting, security hardening, and configuration management.
+A hands-on Linux security engineering environment built around three Red Hat Enterprise Linux 10 virtual machines.
 
-The purpose of the environment is not simply to install services. The lab is being built around repeatable engineering practices:
+The purpose of this repository is not to demonstrate every Linux administration topic. Its primary focus is implementing, automating, testing, breaking, validating, and recovering security controls on RHEL 10 systems.
 
-- configuration
-- validation
-- troubleshooting
-- automation
-- persistence testing
-- recovery
-- security hardening
-- infrastructure documentation
-- Git-based change tracking
+## Current Architecture
 
-The environment is currently being rebuilt around RHEL 10 after previous multi-distribution experiments.
+| Host | Role | Management IP | Primary Security Purpose |
+|---|---|---:|---|
+| DingasHost1 | Automation / Control Node | 10.10.10.100 | Ansible control, security orchestration, evidence collection |
+| DingasHost2 | Application Node | 10.10.10.102 | Security baseline target and application-system testing |
+| DingasHost3 | Edge Security Node | 10.10.10.103 | nftables, segmentation, routing and edge-security testing |
 
----
+All hosts run RHEL 10.
 
-# Current Architecture
+## Security Engineering Areas
 
-The active lab currently consists of three RHEL 10 virtual machines running in Oracle VirtualBox.
+### Ansible Security Automation
 
-The architecture will continue evolving as new Linux engineering projects are introduced.
-DingasHost1 — Linux Engineering Control Node
-Operating System: Red Hat Enterprise Linux 10
-Role: Linux administration, Ansible control, Git integration, provisioning, storage engineering and infrastructure automation
-Management Address: 10.10.10.100/24
-DingasHost1 acts as the primary Linux engineering workstation and management node for the environment.
-Current and planned responsibilities include:
-- Linux systems administration
-- Ansible configuration management
-- Git and GitHub integration
-- SSH administration
-- infrastructure documentation
-- Python automation
-- Bash scripting
-- Kickstart provisioning
-- LVM management
-- network configuration
-- service management
-- systemd administration
-- firewall configuration
-- logging and auditing
-- configuration validation
-- troubleshooting
-- infrastructure recovery testing
-The VM currently contains two network interfaces:
-enp0s3 -> VirtualBox NAT / Internet connectivity
-enp0s8 -> Host-only Linux lab network
+The lab uses Ansible from DingasHost1 to manage security configuration across the three-node environment.
 
-The management network is configured persistently using NetworkManager and nmcli.
-DingasHost1 Storage Architecture
-DingasHost1 currently contains two virtual disks:
-/dev/sda -> 30 GB
-/dev/sdb -> 20 GB
+Implemented concepts include:
 
-The RHEL installation currently uses LVM.
-Current physical volumes include:
-/dev/sda3
-/dev/sdb1
+- Static inventory design
+- Host and security role groups
+- SSH public-key authentication
+- Privilege escalation
+- Per-host encrypted variables
+- Ansible Vault
+- Idempotent security playbooks
+- Security validation across multiple RHEL systems
 
-Both physical volumes belong to the RHEL volume group:
-rhel
+Per-host privilege escalation credentials are encrypted with Ansible Vault and are excluded from Git.
 
-Current logical volumes include:
-rhel-root
-rhel-swap
+### AIDE File Integrity Monitoring
 
-The root logical volume currently spans storage from both virtual disks.
-This configuration will later be used for deeper Linux storage engineering exercises involving:
-- Physical Volumes
-- Volume Groups
-- Logical Volumes
-- filesystem expansion
-- capacity management
-- XFS
-- persistent mounts
-- /etc/fstab
-- storage monitoring
-- filesystem recovery
-- backup storage
-- LVM troubleshooting
-DingasHost2 — Application Engineering Node
-Operating System: Red Hat Enterprise Linux 10
-Role: Managed Linux application server
-DingasHost2 will represent a typical enterprise Linux application server.
-Planned work includes:
-- Nginx
-- application service management
-- systemd
-- SSH administration
-- SELinux
-- firewalld
-- nftables
-- centralized logging
-- auditd
-- package management
-- application directories
-- filesystem permissions
-- service accounts
-- configuration management
-- network troubleshooting
-- automated deployment through Ansible
-The node will progressively become a target for application deployment, troubleshooting, monitoring, security hardening and configuration automation.
-DingasHost3 — Engineering and Orchestration Node
-Operating System: Red Hat Enterprise Linux 10
-Role: Isolated Linux engineering, container, CI/CD and orchestration node
-DingasHost3 will be used to explore more advanced Linux engineering concepts.
-Planned technologies include:
-- Podman
-- Linux namespaces
-- cgroups
-- container networking
-- rootless containers
-- systemd-managed containers
-- persistent container storage
-- Jenkins
-- CI/CD
-- Kubernetes
-- container security
-- automation testing
-The intention is to understand the Linux technologies underneath container orchestration before relying heavily on Kubernetes abstractions.
-The planned progression is:
-Linux Processes
-      |
-      v
-Namespaces
-      |
-      v
-cgroups
-      |
-      v
-Linux Capabilities
-      |
-      v
-Container Images
-      |
-      v
-Rootless Containers
-      |
-      v
-Container Networking
-      |
-      v
-Persistent Storage
-      |
-      v
-systemd Integration
-      |
-      v
-CI/CD
-      |
-      v
-Kubernetes
+AIDE is deployed across the RHEL hosts to establish cryptographic filesystem baselines.
 
-Linux Systems Administration
-A major part of the lab focuses on core Linux administration.
-Topics include:
-- users and groups
-- permissions
-- ownership
-- sudo
-- SSH
-- package management
-- processes
-- signals
-- systemd
-- services
-- timers
-- boot process
-- journald
-- kernel parameters
-- filesystem management
-- mounts
-- LVM
-- swap
-- networking
-- DNS
-- routing
-- logs
-- troubleshooting
-- recovery
-The goal is to become comfortable administering Linux systems from the command line without depending on graphical tools.
-Linux Networking
-Networking is a major component of the lab.
-Technologies and utilities being developed include:
-nmcli
-nmtui
-ip
-ss
-ping
-mtr
-traceroute
-tcpdump
-nft
-firewall-cmd
+Work performed includes:
 
-Topics include:
-- static addressing
-- DHCP
-- default routes
-- persistent NetworkManager profiles
-- multiple network interfaces
-- host-only networks
-- NAT networks
-- routing tables
-- DNS
-- VLAN concepts
-- bonding
-- interface troubleshooting
-- socket inspection
-- packet capture
-- traffic filtering
-- service exposure
-Networking configurations are tested before and after reboots to verify persistence.
-Linux Security Engineering
-Security is treated as part of Linux engineering rather than as a completely separate discipline.
-The lab will progressively include:
-- SELinux
-- firewalld
-- nftables
-- SSH hardening
-- sudo management
-- PAM
-- password policies
-- file permissions
-- auditd
-- rsyslog
-- journald
-- logrotate
-- file integrity monitoring
-- security baselines
-- system hardening
-- service isolation
-- network segmentation
-Security controls will normally be implemented manually first.
-Once their behavior is understood, they can be converted into Ansible automation.
-Configuration Management with Ansible
-Ansible will be the primary configuration-management platform used throughout the lab.
-The intended workflow is:
-Understand the requirement
-        |
-        v
-Configure manually
-        |
-        v
+- Package deployment through Ansible
+- AIDE database initialization
+- Detection of existing databases
+- Idempotent deployment logic
+- Filesystem integrity scanning
+- Controlled filesystem modification testing
+- Analysis of changed filesystem objects
+
+AIDE answers:
+
+> What changed on the filesystem?
+
+A non-zero AIDE result does not automatically indicate an intrusion. It indicates that the current filesystem differs from the stored integrity baseline and requires investigation.
+
+### Linux Audit Framework / auditd
+
+The lab uses the Linux audit subsystem to investigate security-relevant operating system activity.
+
+Security auditing work includes:
+
+- auditd status validation
+- Persistent audit-rule development
+- Identity-file monitoring
+- SSH configuration monitoring
+- Privilege escalation auditing
+- Firewall configuration monitoring
+- Network configuration monitoring
+- Storage configuration monitoring
+
+auditd answers:
+
+> What security-relevant action occurred, when did it occur, and under which identity?
+
+### SELinux
+
+All three RHEL 10 systems operate with SELinux enabled and enforcing.
+
+Current work includes:
+
+- SELinux state validation
+- Security-context inspection
+- passwd and shadow context validation
+- File-label analysis
+- `matchpathcon`
+- `restorecon`
+- Controlled context manipulation
+- Ansible-driven SELinux auditing
+
+SELinux provides mandatory access control and limits what processes can access even when traditional Unix permissions would otherwise permit access.
+
+### Network Security
+
+DingasHost3 is being developed as the lab's edge-security node.
+
+Current work includes:
+
+- Native nftables
+- Stateful packet filtering
+- Network segmentation
+- Management-network separation
+- Corporate network simulation
+- DMZ network simulation
+- IoT network simulation
+- NAT
+- Traffic-policy testing
+- NetworkManager integration
+- Firewall validation and rollback testing
+
+### SSH Security
+
+SSH is used as the primary management transport.
+
+The lab currently demonstrates:
+
+- ED25519 authentication
+- Dedicated Ansible control key
+- ssh-agent
+- IdentitiesOnly
+- authorized_keys management
+- restrictive SSH file permissions
+- Ansible SSH transport
+
+## Security Architecture
+
+
+                         Windows Host
+                      VirtualBox / PowerShell
+                              |
+                       10.10.10.0/24
+                              |
+          +-------------------+-------------------+
+          |                   |                   |
+          v                   v                   v
+ +----------------+   +----------------+   +----------------+
+ | DingasHost1    |   | DingasHost2    |   | DingasHost3    |
+ | Control Node   |   | Application    |   | Edge Security  |
+ | 10.10.10.100   |   | 10.10.10.102   |   | 10.10.10.103   |
+ +----------------+   +----------------+   +----------------+
+ | Ansible        |   | AIDE           |   | nftables       |
+ | Vault          |   | auditd         |   | segmentation   |
+ | AIDE           |   | SELinux        |   | AIDE           |
+ | auditd         |   | hardening      |   | auditd         |
+ | SELinux        |   |                |   | SELinux        |
+ +----------------+   +----------------+   +----------------+
+
+
+
+Security Control Model
+The technologies in the lab serve different purposes:
+Technology	Security Function
+SELinux	Mandatory access control
+AIDE	File integrity monitoring
+auditd	Security event auditing
+nftables	Network policy enforcement
+SSH	Secure remote administration
+Ansible	Automated security configuration
+Ansible Vault	Protection of automation secrets
+NetworkManager	Persistent network configuration
+
+
+Planned Storage Security Work
+The next major security area is data-at-rest protection.
+Planned labs include:
+- LUKS2 encrypted block devices
+- Creating and managing encrypted filesystems
+- Persistent encrypted mounts
+- LUKS key slots
+- Passphrase rotation
+- Recovery-key procedures
+- Clevis
+- Tang
+- Network Bound Disk Encryption (NBDE)
+- Automated unlocking
+- Recovery when the Tang server is unavailable
+- Backup and recovery of LUKS metadata
+- Disaster-recovery exercises
+
+The objective is to understand both normal encrypted-storage operations and failure/recovery scenarios.
+
+Engineering Method
+
+Security controls in this repository are treated as testable engineering systems.
+The general workflow is:
+Observe
+   ↓
+Configure
+   ↓
 Validate
-        |
-        v
-Troubleshoot
-        |
-        v
-Document
-        |
-        v
-Convert to Ansible
-        |
-        v
-Test idempotency
-        |
-        v
-Validate resulting state
+   ↓
+Introduce controlled failure/change
+   ↓
+Detect
+   ↓
+Remediate
+   ↓
+Verify persistence
+   ↓
+Collect evidence
 
-Planned Ansible automation includes:
-- package installation
-- users and groups
-- SSH configuration
-- firewall rules
-- NetworkManager configuration
-- service management
-- systemd units
-- audit configuration
-- rsyslog
-- security hardening
-- filesystem configuration
-- configuration validation
-- evidence collection
-The objective is not merely to write playbooks.
-The objective is to understand what the playbook changes, why the change is required, and how to troubleshoot the system when automation fails.
-Bash Automation
-Bash will be used for operating-system-level automation where a full Ansible workflow is unnecessary.
-Planned use cases include:
-- system validation
-- backup scripts
-- log processing
-- service checks
-- disk-space monitoring
-- configuration checks
-- scheduled maintenance
-- filesystem inspection
-- reporting
-- troubleshooting utilities
-Scripts will use defensive practices such as:
-set -Eeuo pipefail
-
-where appropriate.
-Python for Linux Engineering
-Python will complement Bash and Ansible.
-The emphasis will be on practical Linux automation rather than general-purpose application development.
-Planned Python projects include:
-- server health collection
-- disk-space reporting
-- filesystem analysis
-- service-state validation
-- firewall-rule inspection
-- log parsing
-- configuration validation
-- compliance evidence generation
-- SSH automation
-- API interaction
-- infrastructure provisioning
-- Kickstart generation
-Project 1 — Python-Powered Automated Kickstart Provisioning Engine
-The first major infrastructure project in the rebuilt lab is automated RHEL provisioning.
-Objective
-Eliminate repetitive manual RHEL installations and create reproducible Linux server deployments.
-The project will combine:
-- RHEL Kickstart
-- Python
-- HTTP
-- VirtualBox
-- LVM
-- SSH
-- NetworkManager
-- Git
-- Ansible
-The intended provisioning workflow is:
-RHEL Kickstart Template
-        |
-        v
-Python Configuration Generator
-        |
-        v
-Host-Specific Kickstart
-        |
-        v
-Python HTTP Server
-        |
-        v
-VirtualBox VM
-        |
-        v
-RHEL Installer
-        |
-        v
-Automatic Disk Partitioning
-        |
-        v
-LVM Configuration
-        |
-        v
-Network Configuration
-        |
-        v
-SSH Public Key Deployment
-        |
-        v
-Package Installation
-        |
-        v
-System Reboot
-        |
-        v
-Ansible Management
-
-The long-term objective is to make managed Linux nodes disposable.
-A failed VM should eventually be replaceable through automated provisioning instead of requiring hours of manual reconstruction.
-Infrastructure Persistence Testing
-One of the most important lessons from rebuilding the environment has been the difference between a configuration that works temporarily and one that survives system lifecycle events.
-The lab therefore includes deliberate reboot testing.
-Configurations are tested for persistence across:
-- service restart
-- daemon reload
-- network restart
-- VM reboot
-- cold boot
-- package updates
-- configuration changes
-Important validation areas include:
-Network configuration
-        |
-        v
-SSH connectivity
-        |
-        v
-Storage
-        |
-        v
-Mounted filesystems
-        |
-        v
-System services
-        |
-        v
-Firewall state
-        |
-        v
-Timers
-        |
-        v
-Automation
-
-A service working once is not sufficient evidence that the system is properly engineered.
-Troubleshooting
-Failures are deliberately documented rather than hidden.
-Examples include:
-- incorrect SSH paths
-- SSH host-key changes
-- permission problems
-- sudo failures
-- incorrect service configuration
-- storage mistakes
-- LVM troubleshooting
-- systemd failures
-- PostgreSQL recovery
-- rsyslog syntax errors
-- firewall mistakes
-- failed VM reboot testing
-- operating-system rebuilds
-Troubleshooting evidence is useful because it demonstrates the process used to move from:
-Failure
-   |
-   v
-Observation
-   |
-   v
-Diagnosis
-   |
-   v
-Correction
-   |
-   v
-Validation
-   |
-   v
-Documentation
-
-Git and Documentation
-GitHub is used as the engineering record for the environment.
-Repository:
-https://github.com/Dingane-N/linux-engineering-homelab
-The repository contains:
-- architecture documentation
-- Ansible configuration
-- Linux configuration examples
-- troubleshooting notes
-- incident documentation
-- compliance evidence
-- automation scripts
-- future Kickstart templates
-- system diagrams
-- implementation notes
-The current DingasHost1 was rebuilt and successfully reconnected to the existing repository through SSH authentication.
-Previous project history was preserved.
-Sensitive information must not be committed, including:
-- private SSH keys
-- passwords
-- API keys
-- access tokens
-- unprotected password hashes
-- private certificates
-- environment secrets
-Current Engineering Priorities
-The current development sequence is:
-Stable RHEL Baseline
-        |
-        v
-Persistent Networking
-        |
-        v
-SSH Management
-        |
-        v
-Git Integration
-        |
-        v
-Ansible Connectivity
-        |
-        v
-Linux Storage / LVM
-        |
-        v
-Network Automation
-        |
-        v
-Firewall Automation
-        |
-        v
-Logging and Auditing
-        |
-        v
-Kickstart Provisioning
-        |
-        v
-Python and Bash Automation
-        |
-        v
-Application Services
-        |
-        v
-Container Engineering
-        |
-        v
-CI/CD
-        |
-        v
-Kubernetes
-
-The focus is deliberately on Linux Engineering fundamentals before adding unnecessary complexity.
-Long-Term Objective
-The long-term objective of this homelab is to build practical Linux Engineering capability across:
-Linux Administration
-        +
-Networking
-        +
-Storage
-        +
-Security
-        +
-Automation
-        +
-Troubleshooting
-        +
-Infrastructure as Code
-        +
-Containers
-        +
-Observability
-
-The lab is intended to demonstrate the ability to build, administer, automate, secure, troubleshoot and recover Linux infrastructure rather than simply demonstrate familiarity with individual commands or tools.
-
-
-
-                         GitHub
-                           |
-                           |
-                    DingasHost1
-                    RHEL 10.2
-                 Ansible Controller
-                 Git / Automation
-                 Network Management
-                    10.10.10.100
-                           |
-                           |
-                 10.10.10.0/24
-                 Host-Only Network
-                           |
-              +------------+------------+
-              |                         |
-              v                         v
-        DingasHost2                DingasHost3
-          RHEL 10                    RHEL 10
-       Application Node        Isolated Engineering Node
-                              Jenkins / Containers /
-                              Kubernetes / CI-CD
-
-## Ansible Security Automation
-
-DingasHost1 now operates as the Ansible control node for the RHEL 10 lab.
-
-Current managed-node architecture:
-
-DingasHost1  10.10.10.100  Ansible Control Node
-DingasHost2  10.10.10.102  Application Managed Node
-DingasHost3  10.10.10.103  Security/Engineering Managed Node
-
-Implemented capabilities include:
-- Dedicated SSH automation identity
-- Static Ansible inventory
-- Functional inventory groups
-- Multi-node remote execution
-- RHEL fact gathering
-- SELinux validation
-- sshd and firewalld service validation
-- Critical account-file permission auditing
-- AIDE presence detection
-- Timestamped execution evidence
-Initial security baseline result:
-dingashost2 : ok=12 changed=0 unreachable=0 failed=0
-dingashost3 : ok=12 changed=0 unreachable=0 failed=0
-
-See:
-docs/operations/2026-10-11-ansible-security-baseline.md
-
-
-## Zero-Trust Edge Security Lab
-
-A RHEL 10 edge-security architecture is being developed on DingasHost3 using
-NetworkManager and native nftables.
-
-Implemented during the current phase:
-
-- five-interface RHEL edge-router topology
-- dedicated management, WAN, Corporate, DMZ and IoT interfaces
-- NetworkManager-managed static internal networks
-- dedicated WAN default route
-- persistent IPv4 forwarding
-- Linux network-stack hardening
-- nftables stateful connection tracking
-- default-deny packet filtering
-- nftables sets and verdict maps
-- network anti-spoofing rules
-- Corporate / DMZ / IoT segmentation
-- SSH and API rate-control structures
-- rate-limited firewall logging
-- outbound NAT masquerading
-- safe systemd-based firewall rollback
-- parser validation before activation
-
-The nftables ruleset successfully passed validation and was loaded during a
-controlled cutover test. Management SSH remained reachable.
-
-The rollback mechanism subsequently restored firewalld, leaving permanent
-nftables activation and Ansible IaC deployment for the next phase.
-
-See:
-
-`docs/operations/2026-10-12-zero-trust-edge-nftables.md`
+This repository is therefore intentionally focused on practical RHEL 10 Linux security engineering rather than broad Linux administration coverage.

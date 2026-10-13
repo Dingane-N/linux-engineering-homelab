@@ -1,0 +1,87 @@
+---
+- name: RHEL 10 Linux security baseline audit
+  hosts: linux_security
+  gather_facts: true
+  become: true
+
+  tasks:
+
+    - name: Show operating system
+      ansible.builtin.command:
+        cmd: cat /etc/redhat-release
+      register: redhat_release
+      changed_when: false
+
+    - name: Check SELinux state
+      ansible.builtin.command:
+        cmd: getenforce
+      register: selinux_state
+      changed_when: false
+
+    - name: Check system crypto policy
+      ansible.builtin.command:
+        cmd: update-crypto-policies --show
+      register: crypto_policy
+      changed_when: false
+
+    - name: Check SSH effective configuration
+      ansible.builtin.command:
+        cmd: sshd -T
+      register: sshd_effective
+      changed_when: false
+
+    - name: Check auditd
+      ansible.builtin.command:
+        cmd: systemctl is-active auditd
+      register: auditd_state
+      changed_when: false
+      failed_when: false
+
+    - name: Check AIDE installation
+      ansible.builtin.command:
+        cmd: rpm -q aide
+      register: aide_state
+      changed_when: false
+      failed_when: false
+
+    - name: Check active firewall service
+      ansible.builtin.shell: |
+        echo "firewalld=$(systemctl is-active firewalld || true)"
+        echo "nftables=$(systemctl is-active nftables || true)"
+      register: firewall_state
+      changed_when: false
+
+    - name: Check listening sockets
+      ansible.builtin.command:
+        cmd: ss -tulpn
+      register: listening_sockets
+      changed_when: false
+
+    - name: Check failed services
+      ansible.builtin.command:
+        cmd: systemctl --failed --no-legend
+      register: failed_services
+      changed_when: false
+      failed_when: false
+
+    - name: Check sensitive account file permissions
+      ansible.builtin.command:
+        cmd: stat -c '%a %U:%G %n' {{ item }}
+      loop:
+        - /etc/passwd
+        - /etc/shadow
+        - /etc/group
+        - /etc/gshadow
+      register: account_permissions
+      changed_when: false
+
+    - name: Display security baseline
+      ansible.builtin.debug:
+        msg:
+          - "HOST={{ inventory_hostname }}"
+          - "OS={{ redhat_release.stdout }}"
+          - "SELINUX={{ selinux_state.stdout }}"
+          - "CRYPTO_POLICY={{ crypto_policy.stdout }}"
+          - "AUDITD={{ auditd_state.stdout }}"
+          - "AIDE={{ aide_state.stdout }}"
+          - "{{ firewall_state.stdout }}"

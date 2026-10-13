@@ -1,0 +1,92 @@
+---
+- name: Configure Linux security auditing
+  hosts: linux_security
+  become: true
+  gather_facts: true
+
+  tasks:
+
+    - name: Ensure audit package is installed
+      ansible.builtin.dnf:
+        name: audit
+        state: present
+
+    - name: Ensure auditd is enabled
+      ansible.builtin.service:
+        name: auditd
+        enabled: true
+
+    - name: Deploy Linux security audit rules
+      ansible.builtin.copy:
+        dest: /etc/audit/rules.d/99-linux-security.rules
+        owner: root
+        group: root
+        mode: '0600'
+        content: |
+          # ============================================================
+          # Linux Engineering Homelab - Security Audit Rules
+          # ============================================================
+
+          # Identity and authentication databases
+          -w /etc/passwd -p wa -k identity
+          -w /etc/group -p wa -k identity
+          -w /etc/shadow -p wa -k identity
+          -w /etc/gshadow -p wa -k identity
+
+          # Privilege escalation configuration
+          -w /etc/sudoers -p wa -k sudoers
+          -w /etc/sudoers.d/ -p wa -k sudoers
+
+          # SSH configuration
+          -w /etc/ssh/sshd_config -p wa -k sshd_config
+          -w /etc/ssh/sshd_config.d/ -p wa -k sshd_config
+
+          # Audit subsystem configuration
+          -w /etc/audit/ -p wa -k audit_config
+
+          # Firewall configuration
+          -w /etc/firewalld/ -p wa -k firewall
+          -w /etc/nftables/ -p wa -k firewall
+          -w /etc/sysconfig/nftables.conf -p wa -k firewall
+
+          # NetworkManager configuration
+          -w /etc/NetworkManager/system-connections/ -p wa -k network_config
+
+          # Storage persistence
+          -w /etc/fstab -p wa -k storage_config
+          -w /etc/crypttab -p wa -k storage_config
+
+          # Root commands executed by interactive users
+          -a always,exit -F arch=b64 -S execve -F euid=0 -F auid>=1000 -F auid!=unset -k privileged_exec
+
+    - name: Validate persistent audit rules
+      ansible.builtin.command:
+        cmd: augenrules --check
+      register: audit_rules_check
+      changed_when: false
+
+    - name: Load audit rules
+      ansible.builtin.command:
+        cmd: augenrules --load
+      register: audit_rules_load
+      changed_when: true
+
+    - name: Verify auditd state
+      ansible.builtin.command:
+        cmd: systemctl is-active auditd
+      register: auditd_state
+      changed_when: false
+
+    - name: Read active audit rules
+      ansible.builtin.command:
+        cmd: auditctl -l
+      register: active_audit_rules
+      changed_when: false
+
+    - name: Display auditd deployment result
+      ansible.builtin.debug:
+        msg:
+          - "Host={{ inventory_hostname }}"
+          - "auditd={{ auditd_state.stdout }}"
+          - "Persistent rules=/etc/audit/rules.d/99-linux-security.rules"
+          - "Rules loaded={{ active_audit_rules.stdout_lines | length }}"

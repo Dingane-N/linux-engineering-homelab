@@ -1,0 +1,3 @@
+# Local Ansible encrypted credentials
+ansible/host_vars/*/vault.yml
+inventory/host_vars/*/vault.yml

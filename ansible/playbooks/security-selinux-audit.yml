@@ -1,0 +1,39 @@
+---
+- name: Audit SELinux security state
+  hosts: linux_security
+  become: true
+  gather_facts: true
+
+  tasks:
+
+    - name: Read SELinux enforcement mode
+      ansible.builtin.command:
+        cmd: getenforce
+      register: selinux_mode
+      changed_when: false
+
+    - name: Read SELinux status
+      ansible.builtin.command:
+        cmd: sestatus
+      register: selinux_status
+      changed_when: false
+
+    - name: Inspect passwd security context
+      ansible.builtin.command:
+        cmd: ls -Z /etc/passwd
+      register: passwd_context
+      changed_when: false
+
+    - name: Inspect shadow security context
+      ansible.builtin.command:
+        cmd: ls -Z /etc/shadow
+      register: shadow_context
+      changed_when: false
+
+    - name: Display SELinux security baseline
+      ansible.builtin.debug:
+        msg:
+          - "Host={{ inventory_hostname }}"
+          - "Mode={{ selinux_mode.stdout }}"
+          - "passwd={{ passwd_context.stdout }}"
+          - "shadow={{ shadow_context.stdout }}"
