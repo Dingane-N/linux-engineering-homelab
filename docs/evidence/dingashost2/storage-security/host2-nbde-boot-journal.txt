@@ -1,0 +1,123 @@
+Oct 17 09:52:33 localhost systemd[1]: systemd 257-23.el10_2.1-gb0ca2bb running in system mode (+PAM +AUDIT +SELINUX -APPARMOR +IMA +IPE +SMACK +SECCOMP -GCRYPT -GNUTLS +OPENSSL +ACL +BLKID +CURL +ELFUTILS +FIDO2 +IDN2 -IDN -IPTC +KMOD +LIBCRYPTSETUP +LIBCRYPTSETUP_PLUGINS +LIBFDISK +PCRE2 +PWQUALITY +P11KIT -QRENCODE +TPM2 +BZIP2 +LZ4 +XZ +ZLIB +ZSTD +BPF_FRAMEWORK +BTF +XKBCOMMON +UTMP +SYSVINIT +LIBARCHIVE)
+Oct 17 09:52:36 localhost systemd[1]: Reached target cryptsetup.target - Local Encrypted Volumes.
+Oct 17 09:52:41 localhost systemd[1]: Reached target remote-cryptsetup.target - Remote Encrypted Volumes.
+Oct 17 09:52:44 localhost systemd[1]: Stopped target remote-cryptsetup.target - Remote Encrypted Volumes.
+Oct 17 09:52:44 localhost systemd[1]: Stopped target cryptsetup.target - Local Encrypted Volumes.
+Oct 17 09:52:50 dingashost2.lab.test systemd[1]: systemd 257-23.el10_2.1-gb0ca2bb running in system mode (+PAM +AUDIT +SELINUX -APPARMOR +IMA +IPE +SMACK +SECCOMP -GCRYPT -GNUTLS +OPENSSL +ACL +BLKID +CURL +ELFUTILS +FIDO2 +IDN2 -IDN -IPTC +KMOD +LIBCRYPTSETUP +LIBCRYPTSETUP_PLUGINS +LIBFDISK +PCRE2 +PWQUALITY +P11KIT -QRENCODE +TPM2 +BZIP2 +LZ4 +XZ +ZLIB +ZSTD +BPF_FRAMEWORK +BTF +XKBCOMMON +UTMP +SYSVINIT +LIBARCHIVE)
+Oct 17 09:52:50 dingashost2.lab.test systemd[1]: Reached target cryptsetup.target - Local Encrypted Volumes.
+Oct 17 09:52:50 dingashost2.lab.test systemd[1]: Reached target remote-cryptsetup.target - Remote Encrypted Volumes.
+Oct 17 09:59:15 dingashost2.lab.test sudo[2932]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksFormat --type luks2 /dev/sdb
+Oct 17 10:01:58 dingashost2.lab.test sudo[2976]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksFormat --type luks2 /dev/sdb
+Oct 17 10:02:15 dingashost2.lab.test sudo[2980]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksFormat --type luks2 /dev/sdb
+Oct 17 10:04:22 dingashost2.lab.test sudo[3372]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksDump /dev/sdb
+Oct 17 10:05:36 dingashost2.lab.test sudo[3391]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksDump /dev/sdb
+Oct 17 10:11:04 dingashost2.lab.test sudo[3413]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup open /dev/sdb secure_data
+Oct 17 10:11:59 dingashost2.lab.test sudo[3474]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup status secure_data
+Oct 17 10:14:42 dingashost2.lab.test sudo[3506]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/mkfs.xfs -L secure_data /dev/mapper/secure_data
+Oct 17 10:15:34 dingashost2.lab.test sudo[3534]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/blkid /dev/mapper/secure_data
+Oct 17 10:16:44 dingashost2.lab.test sudo[3561]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/bin/mount /dev/mapper/secure_data /secure-data
+Oct 17 10:18:24 dingashost2.lab.test sudo[3666]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup close secure_data
+Oct 17 10:19:33 dingashost2.lab.test sudo[3695]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup open /dev/sdb secure_data
+Oct 17 10:19:50 dingashost2.lab.test sudo[3760]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/bin/mount /dev/mapper/secure_data /secure-data/
+Oct 17 13:52:09 dingashost2.lab.test sudo[4135]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup status secure_data
+Oct 17 13:52:26 dingashost2.lab.test sudo[4142]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup status secure_data
+Oct 17 13:54:12 dingashost2.lab.test sudo[4150]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksUUID /dev/sdb
+Oct 17 13:55:32 dingashost2.lab.test sudo[4157]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/blkid -s UUID -o value /dev/mapper/secure_data
+Oct 17 13:57:53 dingashost2.lab.test sudo[4190]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/bin/grep -q ^secure_data /etc/crypttab
+Oct 17 14:09:14 dingashost2.lab.test sudo[4406]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup status secure_data
+Oct 17 14:13:19 dingashost2.lab.test sudo[4426]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup status secure_data
+Oct 17 14:13:26 dingashost2.lab.test sudo[4433]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup status secure_data
+Oct 17 14:13:49 dingashost2.lab.test sudo[4437]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksUUID /dev/sdb
+Oct 17 14:14:02 dingashost2.lab.test sudo[4441]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/blkid -s UUID -o value /dev/mapper/secure_data
+Oct 17 14:15:56 dingashost2.lab.test sudo[4476]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup status secure_data
+Oct 17 14:16:43 dingashost2.lab.test sudo[4499]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksDump /dev/sdb
+Oct 17 14:17:08 dingashost2.lab.test sudo[4503]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksDump /dev/sdb
+Oct 17 14:17:23 dingashost2.lab.test sudo[4508]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksAddKey /dev/sdb
+Oct 17 14:18:50 dingashost2.lab.test sudo[4947]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksDump /dev/sdb
+Oct 17 14:18:57 dingashost2.lab.test sudo[4952]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksDump /dev/sdb
+Oct 17 14:19:54 dingashost2.lab.test sudo[5147]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup close secure_data
+Oct 17 14:20:21 dingashost2.lab.test sudo[5176]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup open /dev/sdb secure_data
+Oct 17 14:20:32 dingashost2.lab.test systemd[1]: Created slice system-systemd\x2dcryptsetup.slice - Encrypted Volume Units Service Slice.
+Oct 17 14:20:32 dingashost2.lab.test systemd[1]: Starting systemd-cryptsetup@secure_data.service - Cryptography Setup for secure_data...
+Oct 17 14:20:32 dingashost2.lab.test systemd-cryptsetup[5259]: Volume secure_data already active.
+Oct 17 14:20:32 dingashost2.lab.test systemd[1]: Finished systemd-cryptsetup@secure_data.service - Cryptography Setup for secure_data.
+Oct 17 14:20:32 dingashost2.lab.test systemd[1]: Reached target blockdev@dev-mapper-secure_data.target - Block Device Preparation for /dev/mapper/secure_data.
+Oct 17 14:21:28 dingashost2.lab.test sudo[5290]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup open /dev/sdb secure_data
+Oct 17 14:21:54 dingashost2.lab.test sudo[5301]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksDump /dev/sdb
+Oct 17 14:22:05 dingashost2.lab.test sudo[5306]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksAddKey /dev/sdb
+Oct 17 14:22:55 dingashost2.lab.test sudo[5765]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksAddKey /dev/sdb
+Oct 17 14:23:15 dingashost2.lab.test sudo[5867]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksRemoveKey /dev/sdb
+Oct 17 14:23:39 dingashost2.lab.test sudo[5968]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksDump /dev/sdb
+Oct 17 14:25:48 dingashost2.lab.test sudo[6002]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksAddKey /dev/sdb /root/luks-recovery/secure-data.key
+Oct 17 14:26:08 dingashost2.lab.test sudo[6102]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksAddKey /dev/sdb /root/luks-recovery/secure-data.key
+Oct 17 14:26:49 dingashost2.lab.test sudo[6593]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksDump /dev/sdb
+Oct 17 14:27:44 dingashost2.lab.test sudo[6607]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup open /dev/sdb secure_data --key-file /root/luks-recovery/secure-data.key
+Oct 17 14:28:13 dingashost2.lab.test sudo[6626]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksHeaderBackup /dev/sdb --header-backup-file /root/luks-backup/secure-data-header.img
+Oct 17 14:43:52 dingashost2.lab.test sudo[6767]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksDump /dev/sdb
+Oct 17 14:44:00 dingashost2.lab.test sudo[6774]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksAddKey /dev/sdb
+Oct 17 14:44:18 dingashost2.lab.test sudo[6906]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksAddKey /dev/sdb
+Oct 17 14:52:44 dingashost2.lab.test sudo[7371]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksDump /dev/sdb
+Oct 17 14:52:59 dingashost2.lab.test sudo[7382]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup close secure_data
+Oct 17 14:53:05 dingashost2.lab.test sudo[7390]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup open /dev/sdb secure_data
+Oct 17 14:55:42 dingashost2.lab.test sudo[7488]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksAddKey /dev/sdb
+Oct 17 14:56:15 dingashost2.lab.test sudo[7652]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksAddKey /dev/sdb
+Oct 17 15:00:34 dingashost2.lab.test sudo[7987]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksDump /dev/sdb
+Oct 17 15:01:52 dingashost2.lab.test sudo[8021]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksAddKey /dev/sdb /root/luks-recovery/secure-data.key
+Oct 17 15:02:20 dingashost2.lab.test sudo[8449]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksAddKey /dev/sdb /root/luks-recovery/secure-data.key
+Oct 17 15:03:13 dingashost2.lab.test sudo[9196]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksDump /dev/sdb
+Oct 17 15:03:21 dingashost2.lab.test sudo[9205]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup close secure_data
+Oct 17 15:03:28 dingashost2.lab.test sudo[9213]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup open /dev/sdb secure_data --key-file /root/luks-recovery/secure-data.key
+Oct 17 15:04:09 dingashost2.lab.test sudo[9472]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksHeaderBackup /dev/sdb --header-backup-file /root/luks-backup/secure-data-header.img
+Oct 17 15:07:41 dingashost2.lab.test systemd-cryptsetup-generator[9576]: Failed to create unit file '/run/systemd/generator/systemd-cryptsetup@secure_data.service': File exists
+Oct 17 15:07:41 dingashost2.lab.test (sd-exec-[9571]: /usr/lib/systemd/system-generators/systemd-cryptsetup-generator failed with exit status 1.
+Oct 17 16:07:41 dingashost2.lab.test sudo[9813]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/bin/dnf install -y clevis clevis-luks clevis-systemd clevis-dracut
+Oct 17 16:09:40 dingashost2.lab.test sudo[9830]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/bin/dnf install -y clevis clevis-luks clevis-systemd clevis-dracut
+Oct 17 16:10:05 dingashost2.lab.test sudo[9839]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/bin/dnf install -y clevis clevis-luks clevis-systemd clevis-dracut
+Oct 17 17:00:10 dingashost2.lab.test systemd-cryptsetup-generator[11406]: Failed to create unit file '/run/systemd/generator/systemd-cryptsetup@secure_data.service': File exists
+Oct 17 17:00:10 dingashost2.lab.test (sd-exec-[11401]: /usr/lib/systemd/system-generators/systemd-cryptsetup-generator failed with exit status 1.
+Oct 28 09:54:31 dingashost2.lab.test systemd-cryptsetup-generator[11622]: Failed to create unit file '/run/systemd/generator/systemd-cryptsetup@secure_data.service': File exists
+Oct 28 09:54:31 dingashost2.lab.test (sd-exec-[11617]: /usr/lib/systemd/system-generators/systemd-cryptsetup-generator failed with exit status 1.
+Oct 28 09:58:26 dingashost2.lab.test sudo[11714]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/bin/dnf install -y clevis-systemd clevis-dracut
+Oct 28 09:58:31 dingashost2.lab.test systemd-cryptsetup-generator[11825]: Failed to create unit file '/run/systemd/generator/systemd-cryptsetup@secure_data.service': File exists
+Oct 28 09:58:31 dingashost2.lab.test (sd-exec-[11820]: /usr/lib/systemd/system-generators/systemd-cryptsetup-generator failed with exit status 1.
+Oct 28 09:58:33 dingashost2.lab.test systemd-cryptsetup-generator[11963]: Failed to create unit file '/run/systemd/generator/systemd-cryptsetup@secure_data.service': File exists
+Oct 28 09:58:33 dingashost2.lab.test (sd-exec-[11958]: /usr/lib/systemd/system-generators/systemd-cryptsetup-generator failed with exit status 1.
+Oct 28 10:24:38 dingashost2.lab.test sudo[12375]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/bin/clevis luks list -d /dev/sdb
+Oct 28 10:24:39 dingashost2.lab.test sudo[12452]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksDump /dev/sdb
+Oct 28 10:25:19 dingashost2.lab.test sudo[12460]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksHeaderBackup /dev/sdb --header-backup-file /root/luks-backup/secure-data-pre-nbde.img
+Oct 28 10:26:43 dingashost2.lab.test sudo[12474]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/bin/clevis luks bind -d /dev/sdb tang {"url":"http://10.10.10.103:7500"}
+Oct 28 10:32:24 dingashost2.lab.test sudo[12714]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/bin/clevis luks list -d /dev/sdb
+Oct 28 10:32:26 dingashost2.lab.test sudo[12815]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup luksDump /dev/sdb
+Oct 28 10:36:11 dingashost2.lab.test sudo[12856]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup close secure_data
+Oct 28 10:36:45 dingashost2.lab.test sudo[12866]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/bin/clevis luks unlock -d /dev/sdb
+Oct 28 10:37:54 dingashost2.lab.test sudo[13281]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup status secure_data
+Oct 28 10:41:18 dingashost2.lab.test sudo[13299]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/bin/clevis luks unlock -d /dev/sdb
+Oct 28 10:42:31 dingashost2.lab.test sudo[13445]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup status luks-5f76f2a7-309b-4c73-95a6-2879bca1aba4
+Oct 28 10:42:31 dingashost2.lab.test sudo[13449]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup close luks-5f76f2a7-309b-4c73-95a6-2879bca1aba4
+Oct 28 10:43:26 dingashost2.lab.test sudo[13457]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/bin/clevis luks unlock -d /dev/sdb -n secure_data
+Oct 28 10:44:28 dingashost2.lab.test sudo[13874]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup status secure_data
+Oct 28 10:51:10 dingashost2.lab.test systemd-cryptsetup-generator[14051]: Failed to create unit file '/run/systemd/generator/systemd-cryptsetup@secure_data.service': File exists
+Oct 28 10:51:10 dingashost2.lab.test systemd-cryptsetup-generator[14051]: Failed to create unit file '/run/systemd/generator/systemd-cryptsetup@secure_data.service': File exists
+Oct 28 10:51:10 dingashost2.lab.test (sd-exec-[14046]: /usr/lib/systemd/system-generators/systemd-cryptsetup-generator failed with exit status 1.
+Oct 28 10:53:38 dingashost2.lab.test sudo[14092]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/bin/systemctl enable remote-cryptsetup.target clevis-luks-askpass.path
+Oct 28 10:53:39 dingashost2.lab.test systemd-cryptsetup-generator[14196]: Failed to create unit file '/run/systemd/generator/systemd-cryptsetup@secure_data.service': File exists
+Oct 28 10:53:39 dingashost2.lab.test systemd-cryptsetup-generator[14196]: Failed to create unit file '/run/systemd/generator/systemd-cryptsetup@secure_data.service': File exists
+Oct 28 10:53:39 dingashost2.lab.test (sd-exec-[14191]: /usr/lib/systemd/system-generators/systemd-cryptsetup-generator failed with exit status 1.
+Oct 28 10:55:47 dingashost2.lab.test sudo[14243]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/bin/systemd-analyze verify /run/systemd/generator/remote-cryptsetup.target.wants/*
+Oct 28 11:01:31 dingashost2.lab.test sudo[14278]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/bin/clevis luks unlock -d /etc/sdb -n secure_data
+Oct 28 11:04:36 dingashost2.lab.test systemd-cryptsetup-generator[14403]: Failed to create unit file '/run/systemd/generator/systemd-cryptsetup@secure_data.service': File exists
+Oct 28 11:04:36 dingashost2.lab.test (sd-exec-[14398]: /usr/lib/systemd/system-generators/systemd-cryptsetup-generator failed with exit status 1.
+Oct 28 11:10:39 dingashost2.lab.test sudo[14498]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup close secure_data
+Oct 28 11:10:49 dingashost2.lab.test sudo[14502]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup status secure_data
+Oct 28 11:38:05 dingashost2.lab.test sudo[15373]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/bin/systemctl start systemd-cryptsetup@secure_data.service
+Oct 28 11:38:17 dingashost2.lab.test sudo[15381]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/bin/systemctl start systemd-cryptsetup@secure_data.service.
+Oct 28 11:38:27 dingashost2.lab.test sudo[15386]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/bin/systemctl start systemd-cryptsetup@secure_data.service
+Oct 28 11:38:33 dingashost2.lab.test sudo[15391]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/bin/systemctl status systemd-cryptsetup@secure_data.service --no-pager
+Oct 28 11:40:13 dingashost2.lab.test sudo[15397]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup status secure_data
+Oct 28 11:42:06 dingashost2.lab.test sudo[15429]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/bin/clevis luks list -d /dev/sdb
+Oct 28 11:44:40 dingashost2.lab.test sudo[15531]:  dingane : TTY=pts/0 ; PWD=/home/dingane ; USER=root ; COMMAND=/bin/journalctl -b -u systemd-cryptsetup@secure_data.service --no-pager
+Oct 28 12:11:30 dingashost2.lab.test sudo[16014]:  dingane : TTY=pts/2 ; PWD=/home/dingane ; USER=root ; COMMAND=/bin/grep -n secure_data /etc/crypttab
+Oct 28 12:11:46 dingashost2.lab.test systemd-cryptsetup-generator[16131]: Failed to create unit file '/run/systemd/generator/systemd-cryptsetup@secure_data.service': File exists
+Oct 28 12:11:46 dingashost2.lab.test (sd-exec-[16126]: /usr/lib/systemd/system-generators/systemd-cryptsetup-generator failed with exit status 1.
+Oct 28 12:13:38 dingashost2.lab.test sudo[16177]:  dingane : TTY=pts/2 ; PWD=/home/dingane ; USER=root ; COMMAND=/sbin/cryptsetup status secure_data
+Oct 28 12:13:39 dingashost2.lab.test sudo[16181]:  dingane : TTY=pts/2 ; PWD=/home/dingane ; USER=root ; COMMAND=/bin/clevis luks list -d /dev/sdb

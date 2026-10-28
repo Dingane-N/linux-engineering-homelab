@@ -1,0 +1,50 @@
+=== HOST ===
+dingashost2.lab.test
+
+=== BLOCK DEVICES ===
+NAME          FSTYPE      FSVER    LABEL       UUID                                   FSAVAIL FSUSE% MOUNTPOINTS
+sda                                                                                                  
+├─sda1                                                                                               
+├─sda2        xfs                              f4cf3b9b-72b6-47db-aaba-503b9a37e1c2      1.5G    22% /boot
+└─sda3        LVM2_member LVM2 001             JXalwx-52mf-CMfA-ra0V-jWGT-wplt-FjmCfi                
+  ├─rhel-root xfs                              a80d9f6e-553c-472c-a2da-f00a6d73bbe8      8.8G    45% /
+  └─rhel-swap swap        1                    1c1d8931-fdc7-4ef8-8ce7-fe61e6a2b8d5                  [SWAP]
+sdb           crypto_LUKS 2                    5f76f2a7-309b-4c73-95a6-2879bca1aba4                  
+└─secure_data xfs                  secure_data 71cefc21-51d2-4518-809b-a3a83efa6347      9.7G     2% /secure-data
+sr0                                                                                                  
+
+=== LUKS STATE ===
+/dev/mapper/secure_data is active and is in use.
+  type:    LUKS2
+  cipher:  aes-xts-plain64
+  keysize: 512 [bits]
+  key location: keyring
+  device:  /dev/sdb
+  sector size:  512 [bytes]
+  offset:  32768 [512-byte units] (16777216 [bytes])
+  size:    20938752 [512-byte units] (10720641024 [bytes])
+  mode:    read/write
+
+=== CLEVIS BINDINGS ===
+8: tang '{"url":"http://10.10.10.103:7500"}'
+
+=== CRYPTTAB ===
+secure_data UUID=5f76f2a7-309b-4c73-95a6-2879bca1aba4 none luks,_netdev,nofail
+secure_data UUID=5f76f2a7-309b-4c73-95a6-2879bca1aba4 none _netdev
+
+=== FSTAB ===
+UUID=71cefc21-51d2-4518-809b-a3a83efa6347 /secure-data xfs defaults,nofail,x-systemd.device-timeout=30s 0 0
+
+=== REMOTE CRYPTSETUP DEPENDENCIES ===
+remote-cryptsetup.target
+● └─systemd-cryptsetup@secure_data.service
+
+=== MOUNT ===
+TARGET       SOURCE                  FSTYPE OPTIONS
+/secure-data /dev/mapper/secure_data xfs    rw,relatime,seclabel,attr2,inode64,logbufs=8,logbsize=32k,noquota
+
+=== PROTECTED DATA ===
+RHEL 10 Linux Security Engineering Lab
+Storage protection: LUKS2 + dm-crypt
+Filesystem: XFS
+Host: DingasHost2

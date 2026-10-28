@@ -1,0 +1,31 @@
+=== HOST ===
+dingashost3.lab.test
+
+=== TANG SOCKET ===
+● tangd.socket - Tang Server socket
+     Loaded: loaded (/usr/lib/systemd/system/tangd.socket; enabled; preset: disabled)
+    Drop-In: /etc/systemd/system/tangd.socket.d
+             └─override.conf
+     Active: active (listening) since Wed 2026-10-28 07:43:26 EDT; 2min 20s ago
+ Invocation: dba96ce82dbd42f3a2299e16bd7b2ca1
+       Docs: man:tang(8)
+     Listen: [::]:7500 (Stream)
+   Accepted: 0; Connected: 0;
+    Process: 1043 ExecStartPre=/usr/bin/chmod --silent 0440 -- /var/db/tang/*.jwk /var/db/tang/.*.jwk (code=exited, status=1/FAILURE)
+    Process: 1051 ExecStartPre=/usr/bin/chown -R tang:tang /var/db/tang (code=exited, status=0/SUCCESS)
+      Tasks: 0 (limit: 48757)
+     Memory: 144K (peak: 1.3M)
+        CPU: 36ms
+     CGroup: /system.slice/tangd.socket
+
+Oct 28 07:43:26 dingashost3.lab.test systemd[1]: Starting tangd.socket - Tang Server socket...
+Oct 28 07:43:26 dingashost3.lab.test systemd[1]: Listening on tangd.socket - Tang Server socket.
+
+=== TCP 7500 ===
+LISTEN 0      4096               *:7500            *:*    users:(("systemd",pid=1,fd=75))
+
+=== SELINUX ===
+Enforcing
+tangd_port_t                   tcp      7500, 7406
+
+=== NFTABLES POLICY ===

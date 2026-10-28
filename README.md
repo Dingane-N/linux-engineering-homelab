@@ -199,3 +199,44 @@ Verify persistence
 Collect evidence
 
 This repository is therefore intentionally focused on practical RHEL 10 Linux security engineering rather than broad Linux administration coverage.
+
+## RHEL 10 Data-at-Rest Security and NBDE
+
+The storage-security lab implements encrypted secondary storage and
+network-bound disk encryption across the RHEL 10 environment.
+
+### Architecture
+
+- DingasHost2 — LUKS2 encrypted storage client
+- DingasHost3 — Tang NBDE server
+- Management network — 10.10.10.0/24
+- Tang service — TCP/7500
+- Network access restricted using nftables
+- Tang port protected with the `tangd_port_t` SELinux type
+
+### Implemented Controls
+
+- LUKS2 block-device encryption
+- XFS filesystem over dm-crypt
+- Persistent encrypted filesystem configuration
+- LUKS key-slot management
+- Passphrase and recovery-key testing
+- LUKS header backup and validation
+- Tang server deployment
+- SELinux Tang port configuration
+- nftables least-privilege Host2-to-Tang access
+- Clevis/Tang JWE encryption and decryption testing
+- Clevis LUKS binding
+- Network-dependent systemd cryptsetup configuration
+- Automated NBDE unlocking
+- Reboot/persistence validation
+
+### Security Model
+
+DingasHost2 does not store the Tang server's private key. Clevis uses
+the Tang advertisement and the LUKS-bound policy to recover the material
+required to unlock the encrypted volume when the authorized network
+dependency is available.
+
+Manual LUKS recovery credentials remain available as a disaster-recovery
+mechanism if Tang or network connectivity is unavailable.

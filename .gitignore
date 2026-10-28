@@ -15,3 +15,14 @@ provisioning/kickstart/http-root/ks/*.cfg
 
 # Provisioning secrets
 provisioning/kickstart/secrets/
+
+# LUKS/NBDE sensitive recovery material
+*.key
+*.keyfile
+*header*.img
+*luks-backup*
+*luks-recovery*
+*.recovery
+
+# Ansible encrypted host credentials
+ansible/inventory/host_vars/*/vault.yml
